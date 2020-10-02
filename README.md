@@ -42,6 +42,9 @@ After generating the offline token for your account in the portal, you first nee
 
 ```
 OFFLINE_TOKEN='eyJhbGciO....gyOC5wX5Er0'
+CCSP=AWS
+ID=123456789012
+NICK=Project-Y
 
 function jsonValue() {
 KEY=$1
@@ -52,10 +55,8 @@ awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d 
 TOKEN=$(curl https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token -d grant_type=refresh_token -d client_id=rhsm-api -d refresh_token=$offline_token | jsonValue access_token)
 
 curl -s -H "Authorization: Bearer $TOKEN"  "https://api.access.redhat.com/management/v1/systems?limit=100" | python3 -mjson.tool
-
-curl -s -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json"  --request POST --data '[{"id":"123456789012","nickname":"Project-Y"}]'  "https://api.access.redhat.com/management/v1/cloud_access_providers/AWS/accounts"
-
-curl -s -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -X DELETE  --data '{"id":"123456789012"}'  "https://api.access.redhat.com/management/v1/cloud_access_providers/AWS/accounts"
+curl -s -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json"  --request POST --data "[{\"id\":\"${ID}\",\"nickname\":\"${NICK}\"}]"  "https://api.access.redhat.com/management/v1/cloud_access_providers/${CCSP}/accounts"
+curl -s -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -X DELETE  --data "{\"id\":\"${ID}\"}"  "https://api.access.redhat.com/management/v1/cloud_access_providers/${CCSP}/accounts"
 ```
 
 There is a nice [RHSM API Client](https://github.com/antonioromito/rhsm-api-client) available for the new API.
