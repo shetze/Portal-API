@@ -54,8 +54,11 @@ awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d 
 
 TOKEN=$(curl https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token -d grant_type=refresh_token -d client_id=rhsm-api -d refresh_token=$offline_token | jsonValue access_token)
 
+# list registered systems
 curl -s -H "Authorization: Bearer $TOKEN"  "https://api.access.redhat.com/management/v1/systems?limit=100" | python3 -mjson.tool
+# add new Cloud Access account
 curl -s -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json"  --request POST --data "[{\"id\":\"${ID}\",\"nickname\":\"${NICK}\"}]"  "https://api.access.redhat.com/management/v1/cloud_access_providers/${CCSP}/accounts"
+# delete Cloud Access account
 curl -s -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -X DELETE  --data "{\"id\":\"${ID}\"}"  "https://api.access.redhat.com/management/v1/cloud_access_providers/${CCSP}/accounts"
 ```
 
