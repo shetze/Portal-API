@@ -1,15 +1,13 @@
-import requests
+import getpass, requests
 
-username="JohnDoe"
-password="I am not going to disclose my credential, not in 1000 years!"
-
+username=input("Username: ")
+password=getpass.getpass("Password for %s:" % username)
 
 session = requests.Session()
 session.auth = (username, password)
 
 ownerUrl = 'https://subscription.rhn.redhat.com/subscription/users/%s/owners/' % (username)
 owners = session.get(ownerUrl, verify='/etc/rhsm/ca/redhat-uep.pem')
-
 
 parsed = owners.json()
 for owner in parsed :
