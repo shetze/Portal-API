@@ -16,13 +16,14 @@ for owner in parsed :
 entitlementUrl = 'https://subscription.rhn.redhat.com/subscription/owners/%s/entitlements' % (ownerKey)
 entitlements = session.get(entitlementUrl)
 parsed = entitlements.json()
-print('consumer;contract;endDate')
+print('consumer;product;crontract;endDate')
 for entitlement in parsed :
     consumer = entitlement['consumer']
     name = consumer['name']
     pool = entitlement['pool']
     contract = pool['contractNumber']
+    product = pool['productName']
     endDate = entitlement['endDate']
-    # print('consumer %s contract %s endDate %s' % (name,contract,endDate))
-    print('%s;%s;%s' % (name,contract,endDate))
+    # print('consumer %s product %s contract %s endDate %s' % (name,product,contract,endDate))
+    print('%s;%s;%s;%s' % (name,product,contract,endDate))
 
