@@ -68,6 +68,13 @@ There is a nice [RHSM API Client](https://github.com/antonioromito/rhsm-api-clie
 ## Examples
 
 ### Subscription Report
-The [subscription-report.py](subscription-report.py) script uses the old API to create a simple CSV report of all registered systems with the contract numbers and expiration dates of their attached subscription entitlements.
+The [subscription-report.py](subscription-report.py) Python-3 script uses the old API to create a simple CSV report of all registered systems with the contract numbers and expiration dates of their attached subscription entitlements.
 
+The script asks for your Red Hat portal account username and password and has no further options.
+
+
+### Cloud Access Bulk Registration
+The [cloud-access-bulk.py](cloud-access-bulk.py) Python-3 script takes a simple [CSV file](cloud-access-data.csv) and adds or deletes the listed CCSP accounts to your Cloud Access relationship in the Red Hat portal.
+
+In order to operate this script, you need to edit the declaration of the 'offlineToken' variable and add your own token as generated in the [Red Hat portal](https://access.redhat.com/management/api).
 
